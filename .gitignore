@@ -1,0 +1,13 @@
+# .env file for environment variables
+.env
+
+# Virtual environment
+venv/
+env/
+
+# PyCharm
+.idea/
+
+# Python bytecode files
+__pycache__/
+*.pyc

@@ -1,0 +1,16 @@
+
+- [ ] Authentication by JWT
+	- create table to store refresh tokens and additinal info about login
+	- setup relationships between users and refresh token table
+	- устройство JWT и как его валидировать.(подняться на вверх gpt он объяснил)
+	- как защитить маршруты с помощью токена.
+	- pydantic schemes for login and registration
+	- REST-style routes
+- [ ] add verification by email
+- [ ] Understand how to work with migrations
+- [ ] Add OAuth2
+	- OR edit password_hash column
+	- OR add auth_provider (String)default='local' or is_oauth_user(Boolean)
+	- OR create one more table for oauth users
+- [ ] create slots model
+	- setup relationships between users and slots

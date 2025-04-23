@@ -1,5 +1,6 @@
 from app.db.session import engine
-from app.models import user
+from sqlalchemy.orm import DeclarativeBase
 
 async def init_db():
-	user.DeclarativeBase.metadata.create_all(bind=engine)
+	async with engine.begin() as conn:
+		await conn.run_sync(DeclarativeBase.metadata.create_all)

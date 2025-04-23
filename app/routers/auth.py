@@ -10,4 +10,3 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 async def register_user(user_data: UserRegisterRequest, session: Session = Depends(get_db)):
 	user = create_user(user_data, session)
 
-@router.get("/me")

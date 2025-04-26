@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.routers.auth import router as auth_router
 
 app = FastAPI(
 	title="Booking Service API",
@@ -13,3 +14,5 @@ app = FastAPI(
 		"url": "https://opensource.org/licenses/MIT",
 	},
 	)
+
+app.include_router(auth_router)

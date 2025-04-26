@@ -1,9 +1,11 @@
-from pydantic import BaseModel, EmailStr, SecretStr, field_validator
+from pydantic import BaseModel, EmailStr, SecretStr,ConfigDict, field_validator
 from typing import Optional
 import string
 from app.schemas.token import JWTTokensResponse
 
 class UserRegisterRequest(BaseModel):
+	model_config = ConfigDict(extra="forbid")
+
 	name: str
 	surname: str
 	email: EmailStr
@@ -22,5 +24,5 @@ class UserRegisterRequest(BaseModel):
 			raise ValueError("Password must include at least one digit, one uppercase letter and one special symbol")
 		return password
 	
-class UserRegisterRequest(JWTTokensResponse):
+class UserRegisterResponse(JWTTokensResponse):
 	pass

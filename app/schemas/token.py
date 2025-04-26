@@ -1,4 +1,4 @@
-
+from pydantic import BaseModel
 
 class BaseTokensResponse(BaseModel):
 	access_token: str

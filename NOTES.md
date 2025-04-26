@@ -4,8 +4,8 @@
 	[x] setup relationships between users and refresh token table
 	[x] устройство JWT и как его валидировать.(подняться на вверх gpt он объяснил)
 	[x] как защитить маршруты с помощью токена.
-	[ ] add token creation
-	[ ] write /me endpoint to test registration
+	[x] add token creation
+	[x] write /me endpoint to test registration
 	[ ] pydantic schemes for login and registration
 	[ ] REST-style routes
 - [ ] add verification by email

@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import DeclarativeBase, relationship
+from app.models.base import Base
 
-class User(DeclarativeBase):
+class User(Base):
 	__tablename__ = "users"
 
 	id = Column(Integer, primary_key=True, index=True, nullable=False)

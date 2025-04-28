@@ -14,5 +14,5 @@ async def register_user(user_data: UserRegisterRequest, session: Session = Depen
 	payload = {"sub": str(user.id), "email": user.email}
 	access_token, refresh_token = await TokenService.create_auth_tokens(user, payload, session)
 	
-	response = UserRegisterResponse(access_token, refresh_token)
+	response = UserRegisterResponse(access_token, refresh_token, user)
 	return response

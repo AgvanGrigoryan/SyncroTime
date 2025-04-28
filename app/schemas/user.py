@@ -3,14 +3,22 @@ from typing import Optional
 import string
 from app.schemas.token import JWTTokensResponse
 
-class UserRegisterRequest(BaseModel):
-	model_config = ConfigDict(extra="forbid")
-
+class UserBase(BaseModel):
 	name: str
 	surname: str
 	email: EmailStr
+	description: Optional[str] = None	
+
+class UserInfo(UserBase):
+	id: int
+
+	class Config:
+		orm_mode = True
+
+class UserRegisterRequest(UserInfo):
+	model_config = ConfigDict(extra="forbid")
+
 	password: SecretStr
-	description: Optional[str] = None
 
 	@field_validator("password", mode="after")
 	def validate_password(cls, password: SecretStr) -> SecretStr:
@@ -25,4 +33,4 @@ class UserRegisterRequest(BaseModel):
 		return password
 	
 class UserRegisterResponse(JWTTokensResponse):
-	pass
+	user: UserInfo

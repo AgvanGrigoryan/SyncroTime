@@ -1,1 +1,3 @@
 # SyncroTime
+
+Python 3.12.10

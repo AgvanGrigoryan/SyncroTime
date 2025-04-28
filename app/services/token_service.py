@@ -18,21 +18,26 @@ class TokenService:
 		"refresh": 3600 * 24
 	}
 
+	@staticmethod
+	async def save_refresh_token(refresh_token: str, user_id: int, created_at: int, expires_at: int, db: Session):
+		refresh = RefreshToken(
+			user_id=user_id,
+			token_hash = refresh_token,
+			created_at = created_at,
+			expires_at = expires_at
+		)
+		db.add(refresh)
+		await db.commit()
+		await db.refresh(refresh)
+
 	@classmethod
 	async def create_auth_tokens(cls, user: User, payload: dict, db: Session):
 		now = int(time())
 
 		access_token, _ = cls.create_jwt(payload, "access", now)
 		refresh_token, expires_at = cls.create_jwt(payload, "refresh", now)
-		refresh = RefreshToken(
-			user_id=user.id,
-			token_hash = refresh_token,
-			created_at = now,
-			expires_at = expires_at
-		)
-		db.add(refresh)
-		await db.commit()
-		await db.refresh(refresh)
+		cls.save_refresh_token(refresh_token, user.id, now, expires_at, db)
+
 		return access_token, refresh_token
 
 	@staticmethod

@@ -1,8 +1,7 @@
 import asyncio
 from app.db.session import engine
 from app.models.base import Base
-from app.models.user import User
-from app.models.refresh_token import RefreshToken
+import app.models
 
 async def init_db():
 	async with engine.begin() as conn:

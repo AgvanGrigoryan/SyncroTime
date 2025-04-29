@@ -12,10 +12,9 @@ class UserBase(BaseModel):
 class UserInfo(UserBase):
 	id: int
 
-	class Config:
-		orm_mode = True
+	model_config = ConfigDict(from_attributes=True)
 
-class UserRegisterRequest(UserInfo):
+class UserRegisterRequest(UserBase):
 	model_config = ConfigDict(extra="forbid")
 
 	password: SecretStr

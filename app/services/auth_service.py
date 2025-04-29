@@ -1,21 +1,15 @@
 from sqlalchemy.orm import Session
 
-from app.schemas.user import UserRegisterRequest
+from app.schemas.user import UserRegisterRequest, UserInfo
 from app.models.user import User
 from app.core.security import hash_password, verify_password
 
-async def create_user(user_data: UserRegisterRequest, db: Session) -> User:
+async def create_user(user_data: UserRegisterRequest, db: Session) -> UserInfo:
+	user_dict = user_data.dict(exclude_unset=True)
 	password_hash = hash_password(user_data.password.get_secret_value())
-	user = User(
-		name = user_data.name,
-		surname = user_data.surname,
-		email = user_data.email,
-		password_hash = password_hash
-	)
-	if "description" in user_data.model_fields_set:
-		user.description = user_data.description
+	user = User(**user_dict, password_hash=password_hash)
 
 	db.add(user)
 	db.commit()
 	db.refresh(user)
-	return user
+	return UserInfo.model_validate(user)

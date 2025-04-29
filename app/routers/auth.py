@@ -9,10 +9,10 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserRegisterResponse)
 async def register_user(user_data: UserRegisterRequest, session: Session = Depends(get_db)):
-	user = await create_user(user_data, session)
+	user_info = await create_user(user_data, session)
 
-	payload = {"sub": str(user.id), "email": user.email}
-	access_token, refresh_token = await TokenService.create_auth_tokens(user, payload, session)
+	payload = {"sub": str(user_info.id)}
+	access_token, refresh_token = await TokenService.create_auth_tokens(user_info, payload, session)
 	
-	response = UserRegisterResponse(access_token, refresh_token, user)
+	response = UserRegisterResponse(access_token, refresh_token, user=user_info)
 	return response

@@ -7,8 +7,8 @@ from time import time
 
 from sqlalchemy.orm import Session
 
-from app.models.user import User
 from app.models.refresh_token import RefreshToken
+from app.schemas.user import UserInfo
 from app.core.config import JWT_SECRET
 
 
@@ -31,7 +31,7 @@ class TokenService:
 		await db.refresh(refresh)
 
 	@classmethod
-	async def create_auth_tokens(cls, user: User, payload: dict, db: Session):
+	async def create_auth_tokens(cls, user: UserInfo, payload: dict, db: Session):
 		now = int(time())
 
 		access_token, _ = cls.create_jwt(payload, "access", now)

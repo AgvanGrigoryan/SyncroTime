@@ -5,7 +5,7 @@ import hmac
 import hashlib
 from time import time
 
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.refresh_token import RefreshToken
 from app.schemas.user import UserInfo
@@ -19,7 +19,7 @@ class TokenService:
 	}
 
 	@staticmethod
-	async def save_refresh_token(refresh_token: str, user_id: int, created_at: int, expires_at: int, db: Session):
+	async def save_refresh_token(refresh_token: str, user_id: int, created_at: int, expires_at: int, db: AsyncSession):
 		refresh = RefreshToken(
 			user_id=user_id,
 			token_hash = refresh_token,
@@ -31,7 +31,7 @@ class TokenService:
 		await db.refresh(refresh)
 
 	@classmethod
-	async def create_auth_tokens(cls, user: UserInfo, payload: dict, db: Session):
+	async def create_auth_tokens(cls, user: UserInfo, payload: dict, db: AsyncSession):
 		now = int(time())
 
 		access_token, _ = cls.create_jwt(payload, "access", now)

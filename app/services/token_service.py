@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from typing import Literal
 import base64
 import json
@@ -61,3 +62,27 @@ class TokenService:
 		signature_b64 = cls.base64url_encode(signature)
 		token = f"{header_b64}.{payload_b64}.{signature_b64}"
 		return token, expires_at
+
+	@classmethod
+	def decode_jwt(cls, token: str):
+		try:
+			header_b64, payload_b64, signature_b64 = token.split(".")
+
+			signature_input = f"{header_b64}.{payload_b64}".encode()
+			expected_signature = hmac.new(JWT_SECRET.encode(), signature_input, hashlib.sha256).digest()
+			expected_signature_b64 = cls.base64url_encode(expected_signature)
+			
+			if not hmac.compare_digest(expected_signature_b64, signature_b64):
+				raise HTTPException(status_code=401, detail="Invalid token signature")
+			
+			payload_json = base64.urlsafe_b64decode(payload_b64 + "==")
+			payload = json.loads(payload_json)
+
+			now = int(time())
+			if payload["iat"] + payload["exp"] < now:
+				raise HTTPException(status_code=401, detail="Token has expired")
+		except HTTPException as e:
+			raise e
+		except Exception:
+			raise HTTPException(status_code=401, detail="Invalid token format")
+		return payload

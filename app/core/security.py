@@ -1,6 +1,8 @@
 from passlib.context import CryptContext
+from fastapi.security import HTTPBearer
 
 context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+security = HTTPBearer()
 
 def hash_password(password: str) -> str:
 	return context.hash(password)

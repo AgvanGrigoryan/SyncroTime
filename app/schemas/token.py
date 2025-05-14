@@ -6,4 +6,4 @@ class BaseTokensResponse(BaseModel):
 	token_type: str
 
 class JWTTokensResponse(BaseTokensResponse):
-	token_type: str = "bearer"
+	token_type: str = "Bearer"
